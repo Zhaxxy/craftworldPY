@@ -53,13 +53,17 @@ def uncompress(filepath,targetdir='mods'):
 ##################### use the functions below!
 
 
-def unpack_mod(modfile,location='mods'):
+def unpack_mod(modfile,location='mods',*,hashes=False):
     with TemporaryDirectory() as tempdir:
         uncompress(modfile,tempdir)
         with open(os.path.join(tempdir,'data.map'),'rb') as f:
             mapDict = mf.map2map_dict(f)
-        with open(os.path.join(tempdir,'data.farc'),'rb') as f:
-            mf.farc2files(f,location,mapDict)
+        if not hashes:
+            with open(os.path.join(tempdir,'data.farc'),'rb') as f:
+                mf.farc2files(f,location,mapDict)
+        else:
+            with open(os.path.join(tempdir,'data.farc'),'rb') as f:
+                mf.farc2files(f,location)
 
 
 def pack_mod(mod_contentsLoc,modOutput='Example.mod'):
